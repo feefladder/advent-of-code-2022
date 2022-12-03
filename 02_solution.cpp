@@ -37,7 +37,7 @@ int score(char opp, char you){
     
     score += you =='X'? 1 : you == 'Y' ? 2 : you == 'Z' ? 3 :-1000; //last should not happen
     int result = win(opp,you);
-    score += result ? (result == 1 ? 6 : 0) : 3;
+    score += result != 0 ? (result == 1 ? 6 : 0) : 3;
 
     return score;
 }
