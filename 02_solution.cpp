@@ -54,7 +54,7 @@ int score2(char opp, char you){
         C:Z->win->A ()
     */
     int score = 0;
-    score += you == 'X' ? 0 : (you == 'Y' ? 3 : (you == 'Z' ? 6 : -1000));
+    score += you == 'X' ? 0 : you == 'Y' ? 3 : you == 'Z' ? 6 : -1000;
     int dchoice = (you == 'X' ? -1 : you == 'Y' ? 0 : you == 'Z' ? 1 : -1000);
     char choice = 'A' + mod(opp+dchoice-'A',3);
     score += choice == 'A' ? 1 : choice == 'B' ? 2 : choice == 'C' ? 3 : -1000;
