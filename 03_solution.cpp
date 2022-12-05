@@ -25,7 +25,7 @@ int prio(std::vector<char> items){
     int p=0;
     for(auto& it: items){
         // note that 'A'=65 and 'a'=97, so check for >'Z'->lowercase;
-        p += it > 'Z' ? it-'a'+1:(it - 'A') + 27;
+        p += it > 'Z' ? it-'a'+1:it - 'A' + 27;
     }
     return p;
 }
