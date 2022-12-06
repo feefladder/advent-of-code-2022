@@ -9,12 +9,12 @@ int find_start_marker(std::string packet){
         stuffs[i%L] = packet[i];
         for(int j=0; j<L; j++){
             if(!stuffs[j]){
-                start=false;
+                start=false; //buffer is not full yet
                 break;
             }
             for(int k=0; k<j; k++){
                 if (stuffs[k]==stuffs[j])
-                    start = false;
+                    start = false; //duplicate in buffer
             }
         }
         if(start)
