@@ -6,14 +6,17 @@ int find_start_marker(std::string packet){
     std::string stuffs = packet.substr(0,L);
     for(int i=L;i<packet.size();i++){
         stuffs[i%L] = packet[i];
-        for(int j=0; j<L; j++){
-            for(int k=0; k<j; k++){
-                if (stuffs[k]==stuffs[j])
-                    goto duplicate;
+        auto duplicate = [stuffs](){
+            for(int j=0; j<L; j++){
+                for(int k=0; k<j; k++){
+                    if (stuffs[k]==stuffs[j])
+                        return true;
+                }
             }
-        }
-        return i;
-        duplicate:;
+            return false;
+        };
+        if (!duplicate())
+            return i;
     }
     return -1;
 }
