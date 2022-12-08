@@ -50,8 +50,6 @@ public:
         for(auto& sd: m_subdirs)
             if(sd->m_name == cname)
                 return sd;
-        std::cout<<"big oops! child "<<cname<<" not found!"<<std::endl;
-        int p; std::cin>>p;
         return NULL;
     }
 
@@ -73,7 +71,7 @@ public:
         for(auto f: m_files)
             s += f.s;
         for(auto d: m_subdirs)
-            s+= d->size();
+            s += d->size();
         return s;
     }
 
@@ -119,7 +117,7 @@ int main(int argc, char *argv[]){
             current->add(line);
         }
     }
-
+    // root.print(0);
     std::cout<<"total size of folders less than 100000: "<<root.sizelt<100000>()<<std::endl;
     int req_space = 30000000, total_space = 70000000, used_space = root.size();
     int free_space = total_space-used_space;
