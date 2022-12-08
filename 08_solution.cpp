@@ -41,8 +41,8 @@ size_t find_trees(std::vector<std::vector<uint8_t>> const & forest){
 
 int score(int i, int j, std::vector<std::vector<uint8_t>> const & forest){
     int score=1, h=forest[i][j];
-    if (i==0||j==0||i==forest.size()-1||j==forest[i].size()-1)
-        return 0;
+    // if (i==0||j==0||i==forest.size()-1||j==forest[i].size()-1)
+    //     return 0;
     for(int k=i+1;; k++){
         if(forest[k][j]>=h||k==forest.size()-1){
             score *=k-i;
@@ -72,8 +72,8 @@ int score(int i, int j, std::vector<std::vector<uint8_t>> const & forest){
 
 size_t best(std::vector<std::vector<uint8_t>> const & forest){
     size_t best =0;
-    for(int i=0;i<forest.size();i++){
-        for(int j=0;j<forest[i].size();j++){
+    for(int i=1;i<forest.size()-1;i++){
+        for(int j=1;j<forest[i].size()-1;j++){
             size_t s = score(i,j,forest);
             if(s>best)
                 best=s;
