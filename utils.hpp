@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
+#include <cmath>
 
 namespace utils{
 std::string intersection(std::string a, std::string b){
@@ -30,6 +31,61 @@ std::vector<int> explode(std::string str, char delimiter)
         }
     }
     return output;
+}
+
+template <typename T> inline int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
+template<typename T>
+class Point{
+public:
+    T i,j;
+
+    Point(){}
+    Point(T ni, T nj): i(ni),j(nj){}
+
+    bool operator==(Point const&p){
+        return p.i==i&&p.j==j;
+    }
+
+    Point operator+(Point const& p){
+        return Point(p.i+i,p.j+j);
+    }
+
+    Point<T> operator+=(Point const& p){
+        i+=p.i;
+        j+=p.j;
+        return *this;
+    }
+
+    Point operator-(Point const& p){
+        return Point(i-p.i,j-p.j);
+    }
+
+    bool operator<(Point const& p){
+        if (i==p.i){
+            return j<p.j;
+        } else {
+            return i<p.i;
+        }
+    }
+
+    T magnitude(){
+        return std::sqrt(i*i+j*j);
+    }
+
+    friend std::ostream &operator<<( std::ostream &output, const Point &p ) { 
+         output << p.i<<","<<p.j;
+         return output;
+    }
+};
+
+template<typename T> void remove_duplicates(std::vector<T>& v){
+    //remove duplicates
+    std::sort(v.begin(), v.end());
+    auto last = std::unique(v.begin(), v.end());
+    v.erase(last, v.end());
 }
 
 }
