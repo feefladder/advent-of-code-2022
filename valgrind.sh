@@ -3,8 +3,8 @@
 SUFFIX="_input.txt"
 
 # clear;
-for i in $(seq -f "%02g" 1 $1)
+for i in $(seq -f "%02g" $1 $2)
 do
     echo $i $i${SUFFIX};
-    ./$i.out $i$SUFFIX;
+    valgrind --leak-check=yes ./$i.out $i${SUFFIX};
 done
