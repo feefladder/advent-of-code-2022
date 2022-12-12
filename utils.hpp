@@ -1,3 +1,6 @@
+#ifndef _utils_hpp_
+#define _utils_hpp_
+
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -193,11 +196,13 @@ public:
     std::cout<<"printing raster of size: "<<width<<','<<height<<std::endl;
     for(int j=0;j<height;j++){
       for(int i=0;i<width;i++){
-        std::cout<<_data[i+j*width]<<',';
+        std::cout<<(_data[xyToI(i,j)]?'#':'.');
       }
       std::cout<<std::endl;
     }
   }
 };
 
-}
+} //namespace utils
+
+#endif //_utils_hpp_
