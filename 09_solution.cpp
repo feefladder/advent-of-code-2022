@@ -45,9 +45,7 @@ inline void move(Instruction ins, utils::Point<T>& h, utils::Point<T>& t, std::v
     h.i+=di;
     h.j+=dj;
     follow(h, t);
-    if(std::find(visited.begin(),visited.end(),t)==visited.end()){
-      visited.push_back(t);
-    }
+    visited.emplace_back(t);
   }
 }
 
@@ -103,7 +101,7 @@ void move_snek(Instruction ins, std::vector<utils::Point<T>>& snek, std::vector<
     for(int i=1;i<snek.size();i++){
       follow(snek[i-1], snek[i]);
     }
-    visited.push_back(snek[snek.size()-1]);
+    visited.emplace_back(snek[snek.size()-1]);
   }
 }
 
@@ -127,6 +125,7 @@ int main(int argc, char *argv[]){
     move(d, head, tail, visited);
     move_snek(d, snek, vis2);
   }
+  utils::remove_duplicates(visited);
   utils::remove_duplicates(vis2);
   // print_snek(visited);
   // print_snek(vis2);

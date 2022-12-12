@@ -6,7 +6,7 @@
 #include "utils.hpp"
 
 size_t path(utils::Array2D<char> const& grid, std::vector<utils::Point<int32_t>>& starts, utils::Point<int32_t>& end){
-  size_t min=-1;
+  // size_t min=-1;
 
   /*
   321
@@ -45,11 +45,9 @@ size_t path(utils::Array2D<char> const& grid, std::vector<utils::Point<int32_t>>
         }
       }
     }
-    if(min>out(end.i,end.j)&&out(end.i,end.j)!=0)
-      min=out(end.i,end.j);
   }
-  std::cout<<"best path: "<<min<<std::endl;
-  return min;
+  std::cout<<"best path: "<<out(end.i,end.j)<<std::endl;
+  return out(end.i,end.j);
 }
 
 

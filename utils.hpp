@@ -45,6 +45,7 @@ public:
   T i,j;
 
   Point(){}
+  Point(Point const& p){i=p.i;j=p.j;}
   Point(T ni, T nj): i(ni),j(nj){}
 
   bool operator==(Point const&p){
