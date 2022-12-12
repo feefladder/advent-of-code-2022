@@ -23,13 +23,14 @@ size_t path(utils::Array2D<char> const& grid, std::vector<utils::Point<int32_t>>
   const int d4x[] = {1,0,-1,0};
   const int d4y[] = {0,1,0,-1};
   std::queue<utils::Point<int32_t>> q;
+  utils::Array2D<int> out = utils::Array2D<int>(grid.get_width(), grid.get_height());
   for(auto& start: starts){
-    utils::Array2D<int> out = utils::Array2D<int>(grid.get_width(), grid.get_height());
+    out(start.i,start.j)=0;
     q.push(start);
     while(!q.empty()){
       utils::Point p = q.front();
       q.pop();
-
+      
       for(int i=0;i<4;i++){
         int nx = p.i+d4x[i],ny=p.j+d4y[i];
         if(nx==start.i&&ny==start.j)
@@ -37,7 +38,7 @@ size_t path(utils::Array2D<char> const& grid, std::vector<utils::Point<int32_t>>
         if(grid.in_grid(nx,ny)){
           if(grid(nx,ny)-1>grid(p.i,p.j))
             continue; //skip points that are too high
-          if(grid(nx,ny)+out(p.i,p.j)<out(nx,ny)||out(nx,ny)==0){
+          if(out(p.i,p.j)+1<out(nx,ny)||out(nx,ny)==0){
             out(nx,ny)=out(p.i,p.j)+1;
             q.emplace(nx,ny);
           }
