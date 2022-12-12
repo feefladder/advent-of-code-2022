@@ -23,6 +23,13 @@ public:
   uint64_t* val=&old;
   uint64_t (*opPtr)(uint64_t, uint64_t);
   Monkey(){}
+  Monkey(Monkey const& m): items(m.items),divnum(m.divnum),mtrue(m.mtrue),mfalse(m.mfalse),old(m.old),inspects(m.inspects),opPtr(m.opPtr){
+    if(m.val==&m.old){
+        val=&old;
+    } else {
+        val=new uint64_t(*m.val); //m.val is deleted on other monkey delete
+    }
+  }
   ~Monkey(){
     if(val!=&old){
       delete val;
@@ -44,25 +51,25 @@ public:
     }
   }
 
-  void do_thing(std::vector<Monkey*>& monkeys){
+  void do_thing(std::vector<Monkey>& monkeys){
     for(auto& it: items){
       inspects++;
       old = it;
       it = opPtr(old, *val)/3;
       uint64_t m = it%divnum?mfalse:mtrue;
-      monkeys[m]->items.push_back(it);
+      monkeys[m].items.emplace_back(it);
     }
     items.clear();
   }
 
-  void do_thing2(std::vector<Monkey*>& monkeys, uint64_t& lcm){
+  void do_thing2(std::vector<Monkey>& monkeys, uint64_t& lcm){
     for(auto& it: items){
       it %= lcm;
       inspects++;
       old = it;
       it = opPtr(old, *val)%lcm;
       uint64_t m = it%divnum?mfalse:mtrue;
-      monkeys[m]->items.push_back(it);
+      monkeys[m].items.emplace_back(it);
     }
     items.clear();
   }
@@ -72,10 +79,10 @@ public:
   }
 };
 
-uint64_t max2(std::vector<Monkey*>& monkeys){
+uint64_t max2(std::vector<Monkey>& monkeys){
   std::vector<uint64_t> inspects;
   for(auto& m:monkeys){
-    inspects.push_back(m->inspects);
+    inspects.push_back(m.inspects);
   }
   std::sort(inspects.begin(), inspects.end());
 
@@ -89,7 +96,7 @@ uint64_t max2(std::vector<Monkey*>& monkeys){
 int main(int argc, char *argv[]){
   std::ifstream input(argv[1]);
   std::string line;
-  std::vector<Monkey*> monkeys, m2;
+  std::vector<Monkey> monkeys, m2;
 
   uint64_t old = 5;
   uint64_t* val = &old;
@@ -107,28 +114,25 @@ int main(int argc, char *argv[]){
     uint64_t tm = line[line.size()-1] - '0';
     std::getline(input, line);
     uint64_t fm = line[line.size()-1] - '0';
-    monkeys.push_back(new Monkey(its, op, dn, tm, fm));
-    m2.push_back(new Monkey(its, op, dn, tm, fm));
+    monkeys.emplace_back(its, op, dn, tm, fm);
+    m2.emplace_back(its, op, dn, tm, fm);
   }
 
   for(uint64_t i=1;i<=20;i++){
     for(uint64_t m=0;m<monkeys.size();m++){
-      monkeys[m]->do_thing(monkeys);
+      monkeys[m].do_thing(monkeys);
     }
   }
 
   uint64_t lcm = 1;
   for(auto& m: m2){
-    lcm *= m->divnum;
+    lcm *= m.divnum;
   }
   for(uint64_t i=1;i<=10000;i++){
     for(uint64_t m=0;m<m2.size();m++){
-      m2[m]->do_thing2(m2, lcm);
+      m2[m].do_thing2(m2, lcm);
     }
   }
 
   std::cout<<"inspects: "<<max2(monkeys)<<','<<max2(m2)<<std::endl;
-  for(int i=0;i<monkeys.size();i++){
-    delete monkeys[i], m2[i];
-  }
 }
