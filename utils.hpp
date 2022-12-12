@@ -99,8 +99,8 @@ class Array2D{
 
   static const i_t NO_I = std::numeric_limits<i_t>::max(); //TODO: What is this?
 
-  xy_t width;
-  xy_t height; //can be changed
+  xy_t width=0;
+  xy_t height=0; //can be changed
 
   
 public:
@@ -114,6 +114,22 @@ public:
     assert(nheight>0);
     _data = std::vector<T>(nwidth*nheight,0);
   }
+
+  void add_row(std::vector<T>& row){
+    assert(row.size()==width);
+    _data.insert(_data.end(), row.begin(), row.end());
+    height++;
+  }
+
+  template<class R>
+  void add_row(R begin, R end){
+    assert(end-begin==width);
+    _data.insert(_data.end(), begin, end);
+    height++;
+  }
+
+  xy_t get_width() const {return width;}
+  xy_t get_height() const {return height;}
 private:
   /**
     @brief Convert from x,y coordinates to index coordinates
@@ -128,6 +144,11 @@ private:
     return (i_t)y*(i_t)width+(i_t)x;
   }
 public:
+  template<typename U>
+  inline bool in_grid(U i, U j) const {
+    return i>=0&&i<width&&j>=0&&j<height;
+  }
+
   /**
     @brief Return cell value based on i-coordinate
 
@@ -159,12 +180,19 @@ public:
     assert(y<height);
     return _data[xyToI(x,y)];
   }
+  T operator()(xy_t x, xy_t y) const {
+    assert(x>=0);
+    assert(y>=0);
+    assert(x<width);
+    assert(y<height);
+    return _data[xyToI(x,y)];
+  }
 
   void print(){
     std::cout<<"printing raster of size: "<<width<<','<<height<<std::endl;
     for(int j=0;j<height;j++){
       for(int i=0;i<width;i++){
-        std::cout<<(_data[i+j*width]?'#':'.');
+        std::cout<<_data[i+j*width]<<',';
       }
       std::cout<<std::endl;
     }
