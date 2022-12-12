@@ -1,3 +1,8 @@
+// This project is libre, and licenced under the terms of the
+// DO WHAT THE FUCK YOU WANT TO PUBLIC LICENCE, version 4.0,
+// as published by dtf, July 2019. See the COPYING file or
+// https://github.com/dtf0/wtfpl for more details.
+
 #include <fstream>
 #include <iostream>
 
