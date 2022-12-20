@@ -14,6 +14,12 @@
 #include <cmath>
 
 namespace utils{
+
+template<typename T>
+inline T triangle_nr(T const& n){
+  return n*(n+1)/2;
+}
+
 std::string intersection(std::string a, std::string b){
   std::string is;
   for(auto i: a){
