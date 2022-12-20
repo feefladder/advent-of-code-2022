@@ -43,6 +43,55 @@ std::vector<T> explode(std::string str, char delimiter)
   return output;
 }
 
+template<typename T>
+std::vector<T> explode(std::string str, std::string delimiter)
+{
+  std::vector<T> output;
+  std::string token;
+  int pos=0,pos2=0;
+  //   0       1       2
+  // blabla->blabla->blabla
+  // pos   pos2
+  //       pos     pos2
+  //               pos     pos2
+  pos2 = str.find(delimiter, pos);
+  do {
+    if(pos==0 && pos2!=0){
+      output.push_back(std::stoi(str.substr(0, pos2)));
+    } else if(pos2-pos){
+      output.push_back(std::stoi(str.substr(pos+delimiter.size(), pos2-pos-delimiter.size())));
+    }
+    pos=pos2;
+    pos2=str.find(delimiter,pos2+1);
+    std::cout<<"output: "<<output.back()<<"pos: "<<pos<<','<<pos2<<std::endl;
+  } while(pos != -1);
+  return output;
+}
+
+
+std::vector<std::string> explode(std::string str, std::string delimiter)
+{
+  std::vector<std::string> output;
+  std::string token;
+  int pos=0,pos2=0;
+  //   0       1       2
+  // blabla->blabla->blabla
+  // pos   pos2
+  //       pos     pos2
+  //               pos     pos2
+  pos2 = str.find(delimiter, pos);
+  do {
+    if(pos==0 && pos2!=0){
+      output.push_back(str.substr(0, pos2));
+    } else if(pos2-pos){
+      output.push_back(str.substr(pos+delimiter.size(), pos2-pos-delimiter.size()));
+    }
+    pos=pos2;
+    pos2=str.find(delimiter,pos2+1);
+  } while(pos != -1);
+  return output;
+}
+
 template <typename T> inline int sgn(T val) {
   return (T(0) < val) - (val < T(0));
 }
@@ -55,6 +104,7 @@ public:
   Point(){}
   Point(Point const& p){i=p.i;j=p.j;}
   Point(T ni, T nj): i(ni),j(nj){}
+  Point(std::pair<T,T> p): i(p.first),j(p.second){}
 
   bool operator==(Point const&p){
     return p.i==i&&p.j==j;
@@ -101,6 +151,7 @@ template<typename T> void remove_duplicates(std::vector<T>& v){
 
 template<typename T>
 class Array2D{
+protected:
   //Using uint32_t for i-addressing allows for rasters of ~65535^2. These
   //dimensions fit easily within an int32_t xy-address.
   typedef int32_t  xy_t;            ///< xy-addressing data type
@@ -110,10 +161,12 @@ class Array2D{
 
   xy_t width=0;
   xy_t height=0; //can be changed
-
+  std::vector<T> _data;
+  xy_t x_off,y_off;
   
 public:
-  std::vector<T> _data;
+
+
   Array2D(){}
   Array2D(xy_t nwidth) : width(nwidth){
     _data.reserve(nwidth);
@@ -139,7 +192,7 @@ public:
 
   xy_t get_width() const {return width;}
   xy_t get_height() const {return height;}
-private:
+protected:
   /**
     @brief Convert from x,y coordinates to index coordinates
 
@@ -151,6 +204,11 @@ private:
   inline i_t xyToI(xy_t x, xy_t y) const {
     assert(0<=x && x<width && 0<=y && y<height);
     return (i_t)y*(i_t)width+(i_t)x;
+  }
+
+  template<typename U>
+  inline i_t pointToI(Point<U> p) const {
+    return xyToI(p.i,p.j);
   }
 public:
   template<typename U>
@@ -197,11 +255,28 @@ public:
     return _data[xyToI(x,y)];
   }
 
+
+  T& operator()(Point<xy_t> p) {
+    assert(p.i>=0);
+    assert(p.j>=0);
+    assert(p.i<width);
+    assert(p.j<height);
+    return _data[xyToI(p.i,p.j)];
+  }
+
+  T operator()(Point<xy_t> p) const {
+    assert(p.i>=0);
+    assert(p.j>=0);
+    assert(p.i<width);
+    assert(p.j<height);
+    return _data[xyToI(p.i,p.j)];
+  }
+
   void print(){
     std::cout<<"printing raster of size: "<<width<<','<<height<<std::endl;
     for(int j=0;j<height;j++){
       for(int i=0;i<width;i++){
-        std::cout<<(_data[xyToI(i,j)]?'#':'.');
+        std::cout<<(_data[xyToI(i,j)]?_data[xyToI(i,j)]:'.');
       }
       std::cout<<std::endl;
     }

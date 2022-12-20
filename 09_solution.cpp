@@ -132,8 +132,8 @@ int main(int argc, char *argv[]){
   }
   utils::remove_duplicates(visited);
   utils::remove_duplicates(vis2);
-  // print_snek(visited);
-  // print_snek(vis2);
+//   print_snek(visited);
+//   print_snek(vis2);
   std::cout<<visited.size()<<std::endl;
   std::cout<<vis2.size()<<std::endl;
 }

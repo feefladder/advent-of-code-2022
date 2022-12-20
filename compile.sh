@@ -1,4 +1,4 @@
-SUFFIX="_input.txt" #"_sample.txt"
+SUFFIX="_sample.txt" #"_sample.txt"
 SOLUTION="_solution.cpp"
 
 if [ $# == 1 ]
