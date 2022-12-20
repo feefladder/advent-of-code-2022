@@ -217,7 +217,7 @@ int main(int argc, char *argv[]){
   std::cout<<int(lava.calc_sides())<<std::endl;
   // lava.print();
   lava.outside('.');
-  // lava.print();
-  std::cout<<int(lava.calc_sides())<<std::endl;
   
+  std::cout<<int(lava.calc_sides())<<std::endl;
+//   lava.print();
 }
