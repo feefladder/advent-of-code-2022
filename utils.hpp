@@ -20,6 +20,13 @@ inline T triangle_nr(T const& n){
   return n*(n+1)/2;
 }
 
+template<typename T, typename U>
+inline const unsigned int mod(T a, U const b){
+    // https://stackoverflow.com/a/23214219/14681457
+    int r = a%b;
+    return (r < 0) ? (r+b)%b : r;
+}
+
 std::string intersection(std::string a, std::string b){
   std::string is;
   for(auto i: a){
